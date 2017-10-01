@@ -1,0 +1,107 @@
+
+CREATE SCHEMA IF NOT EXISTS Library DEFAULT CHARACTER SET utf8 ;
+USE Library ;
+
+CREATE TABLE IF NOT EXISTS Book (
+  IDBook BIGINT NOT NULL AUTO_INCREMENT,
+  BookName VARCHAR(45) NOT NULL,
+  Author VARCHAR(45) NOT NULL,
+  Publisher VARCHAR(50) NULL,
+  ImprintYear INT NULL,
+  Amount INT NOT NULL,
+  PRIMARY KEY (IDBook)
+  ) ENGINE = InnoDB
+AUTO_INCREMENT = 1
+DEFAULT CHARACTER SET = utf8;
+
+CREATE TABLE IF NOT EXISTS City (
+  IDCity BIGINT NOT NULL AUTO_INCREMENT,
+  City VARCHAR(25) NOT NULL,
+  PRIMARY KEY (IDCity)
+  ) ENGINE = InnoDB
+AUTO_INCREMENT = 1 
+DEFAULT CHARACTER SET = utf8;
+
+CREATE TABLE IF NOT EXISTS Person (
+  IDPerson BIGINT NOT NULL AUTO_INCREMENT,
+  Surname VARCHAR(25) NOT NULL,
+  Name VARCHAR(25) NOT NULL,
+  Email VARCHAR(45) NULL,
+  IDCity BIGINT NULL,
+  Street VARCHAR(30) NULL,
+  Apartment VARCHAR(10) NULL,
+  PRIMARY KEY (IDPerson),
+  CONSTRAINT fk_person_city1
+    FOREIGN KEY (IDCity)
+    REFERENCES Library.city (IDCity)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION
+) ENGINE = InnoDB
+AUTO_INCREMENT = 1
+DEFAULT CHARACTER SET = utf8;
+
+CREATE TABLE IF NOT EXISTS PersonBook (
+  IDPerson BIGINT NOT NULL,
+  IDBook BIGINT NOT NULL,
+  PRIMARY KEY (IDPerson, IDBook),
+  CONSTRAINT personbook_ibfk_1
+    FOREIGN KEY (IDPerson)
+    REFERENCES Library.person (IDPerson),
+  CONSTRAINT personbook_ibfk_2
+    FOREIGN KEY (IDBook)
+    REFERENCES Library.book (IDBook)
+) ENGINE = InnoDB
+DEFAULT CHARACTER SET = utf8;
+
+CREATE TABLE IF NOT EXISTS Logger (
+  IDLogger BIGINT NOT NULL AUTO_INCREMENT,
+  Person VARCHAR(50) NOT NULL,
+  Book VARCHAR(90) NOT NULL,
+  Action VARCHAR(10) NOT NULL,
+  TimeStamp DATETIME NOT NULL,
+  User VARCHAR(50) NULL,
+  PRIMARY KEY (IDLogger)
+) ENGINE = InnoDB
+AUTO_INCREMENT = 1
+DEFAULT CHARACTER SET = utf8;
+
+
+DELIMITER //
+CREATE TRIGGER AfterInsertPersonBook
+AFTER INSERT
+ON PersonBook FOR EACH ROW
+BEGIN
+	DECLARE NamePerson VARCHAR(50);
+    DECLARE NameBook VARCHAR(90);
+    SELECT CONCAT(Surname, ' ', Name) INTO NamePerson
+    FROM Person WHERE IDPerson=new.IDPerson;
+    SELECT CONCAT(BookName, ' // ', Author) INTO NameBook
+    FROM Book WHERE IDBook=new.IDBook;
+	INSERT INTO Logger (Person, Book, Action, 
+								Time_Stamp, User)
+	VALUES(NamePerson,  NameBook, 'GOT', NOW(), USER() );
+END //
+DELIMITER ;
+
+DELIMITER //
+CREATE TRIGGER AfterDeletePersonBook
+AFTER DELETE
+ON PersonBook FOR EACH ROW
+BEGIN
+	DECLARE NamePerson VARCHAR(50);
+    DECLARE NameBook VARCHAR(90);
+    SELECT CONCAT(Surname, ' ', Name) INTO NamePerson
+    FROM Person WHERE IDPerson=old.IDPerson;
+    SELECT CONCAT(BookName, ' // ', Author) INTO NameBook
+    FROM Book WHERE IDBook=old.IDBook;
+	INSERT INTO Logger (Person, Book, Action, 
+								Time_Stamp, User)
+	VALUES(NamePerson,  NameBook, 'GAVEBACK', NOW(), USER() );
+END //
+DELIMITER ;
+
+
+
+
+
+
