@@ -1,15 +1,16 @@
 package com.pavelchak.domain;
 
+import com.pavelchak.DTO.EntityInterface;
 import javax.persistence.*;
 import java.util.*;
 
 @Entity
 @Table(name = "book")
-public class BookEntity {
+public class BookEntity  implements EntityInterface{
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "IDBook", nullable = false)
-    private Long idBook;
+    private Long id;
 
     @Column(name = "Book_Name", nullable = false, length = 45)
     private String bookName;
@@ -29,11 +30,20 @@ public class BookEntity {
     @ManyToMany(mappedBy = "books")
     private Set<PersonEntity> persons;
 
-    public Long getIdBook() {
-        return idBook;
+    BookEntity(){}
+
+    BookEntity(String bookName,String author,String publisher,Integer imprintYear){
+        this.bookName=bookName;
+        this.author=author;
+        this.publisher=publisher;
+        this.imprintYear=imprintYear;
     }
-    public void setIdBook(Long idBook) {
-        this.idBook = idBook;
+
+    public Long getId() {
+        return id;
+    }
+    public void setId(Long idBook) {
+        this.id = idBook;
     }
 
     public String getBookName() {
@@ -85,7 +95,7 @@ public class BookEntity {
 
         BookEntity that = (BookEntity) o;
 
-        if (idBook != null ? !idBook.equals(that.idBook) : that.idBook != null) return false;
+        if (id != null ? !id.equals(that.id) : that.id != null) return false;
         if (bookName != null ? !bookName.equals(that.bookName) : that.bookName != null) return false;
         if (author != null ? !author.equals(that.author) : that.author != null) return false;
         if (publisher != null ? !publisher.equals(that.publisher) : that.publisher != null) return false;
@@ -97,7 +107,7 @@ public class BookEntity {
 
     @Override
     public int hashCode() {
-        int result = idBook != null ? idBook.hashCode() : 0;
+        int result = id != null ? id.hashCode() : 0;
         result = 31 * result + (bookName != null ? bookName.hashCode() : 0);
         result = 31 * result + (author != null ? author.hashCode() : 0);
         result = 31 * result + (publisher != null ? publisher.hashCode() : 0);

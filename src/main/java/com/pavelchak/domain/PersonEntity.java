@@ -1,15 +1,17 @@
 package com.pavelchak.domain;
 
+import com.pavelchak.DTO.EntityInterface;
+
 import javax.persistence.*;
 import java.util.*;
 
 @Entity
 @Table(name = "person")
-public class PersonEntity {
+public class PersonEntity implements EntityInterface {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "IDPerson", nullable = false)
-    private Long idPerson;
+    private Long id;
 
     @Column(name = "Surname", nullable = false, length = 25)
     private String surname;
@@ -36,11 +38,21 @@ public class PersonEntity {
             inverseJoinColumns = @JoinColumn(name = "IDBook", referencedColumnName = "IDBook", nullable = false))
     private Set<BookEntity> books;
 
-    public Long getIdPerson() {
-        return idPerson;
+    PersonEntity(){}
+
+    PersonEntity(String surname,String name,String email,String street,String apartment){
+        this.surname=surname;
+        this.name=name;
+        this.email=email;
+        this.street=street;
+        this.apartment=apartment;
     }
-    public void setIdPerson(Long idPerson) {
-        this.idPerson = idPerson;
+
+    public Long getId() {
+        return id;
+    }
+    public void setId(Long idPerson) {
+        this.id = idPerson;
     }
 
     public String getSurname() {
@@ -100,7 +112,7 @@ public class PersonEntity {
 
         PersonEntity that = (PersonEntity) o;
 
-        if (idPerson != null ? !idPerson.equals(that.idPerson) : that.idPerson != null) return false;
+        if (id != null ? !id.equals(that.id) : that.id != null) return false;
         if (surname != null ? !surname.equals(that.surname) : that.surname != null) return false;
         if (name != null ? !name.equals(that.name) : that.name != null) return false;
         if (email != null ? !email.equals(that.email) : that.email != null) return false;
@@ -112,7 +124,7 @@ public class PersonEntity {
 
     @Override
     public int hashCode() {
-        int result = idPerson != null ? idPerson.hashCode() : 0;
+        int result = id != null ? id.hashCode() : 0;
         result = 31 * result + (surname != null ? surname.hashCode() : 0);
         result = 31 * result + (name != null ? name.hashCode() : 0);
         result = 31 * result + (email != null ? email.hashCode() : 0);

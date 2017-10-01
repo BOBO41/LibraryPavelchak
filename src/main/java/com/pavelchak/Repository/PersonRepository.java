@@ -1,4 +1,4 @@
-package com.pavelchak.repository.data;
+package com.pavelchak.Repository;
 
 import com.pavelchak.domain.PersonEntity;
 import org.springframework.data.jpa.repository.JpaRepository;

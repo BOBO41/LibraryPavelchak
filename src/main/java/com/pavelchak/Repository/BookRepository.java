@@ -1,4 +1,4 @@
-package com.pavelchak.repository.data;
+package com.pavelchak.Repository;
 
 import com.pavelchak.domain.BookEntity;
 import org.springframework.data.jpa.repository.JpaRepository;

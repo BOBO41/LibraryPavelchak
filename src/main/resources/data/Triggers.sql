@@ -9,7 +9,7 @@ BEGIN
     DECLARE NameBook VARCHAR(90);
     SELECT CONCAT(Surname, ' ', Name) INTO NamePerson
     FROM Person WHERE IDPerson=new.IDPerson;
-    SELECT CONCAT(BookName, ' // ', Author) INTO NameBook
+    SELECT CONCAT(Book_Name, ' / ', Author) INTO NameBook
     FROM Book WHERE IDBook=new.IDBook;
 	INSERT INTO Logger (Person, Book, Action, 
 								Time_Stamp, User)
@@ -26,7 +26,7 @@ BEGIN
     DECLARE NameBook VARCHAR(90);
     SELECT CONCAT(Surname, ' ', Name) INTO NamePerson
     FROM Person WHERE IDPerson=old.IDPerson;
-    SELECT CONCAT(BookName, ' // ', Author) INTO NameBook
+    SELECT CONCAT(Book_Name, ' / ', Author) INTO NameBook
     FROM Book WHERE IDBook=old.IDBook;
 	INSERT INTO Logger (Person, Book, Action, 
 								Time_Stamp, User)
