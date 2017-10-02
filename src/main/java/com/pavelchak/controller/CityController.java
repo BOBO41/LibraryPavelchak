@@ -1,6 +1,7 @@
 package com.pavelchak.controller;
 
 import com.pavelchak.DTO.DTOBuilder;
+import com.pavelchak.DTO.impl.CitiesDTO;
 import com.pavelchak.DTO.impl.CityDTO;
 import com.pavelchak.domain.CityEntity;
 import com.pavelchak.service.CityService;
@@ -17,19 +18,30 @@ public class CityController {
     CityService cityService;
 
     @GetMapping(value = "/api/city")
-    public ResponseEntity<List<CityDTO>> getAllCity() {
+    public ResponseEntity<List<CitiesDTO>> getAllCity() {
         List<CityEntity> cityList = cityService.getAllCity();
         Link link = linkTo(methodOn(CityController.class).getAllCity()).withSelfRel();
-        List<CityDTO> cities = DTOBuilder.buildDtoListForCollection(cityList, CityDTO.class, link);
+        List<CitiesDTO> cities = DTOBuilder.buildDtoListForCollection(cityList, CitiesDTO.class, link);
         return new ResponseEntity<>(cities, HttpStatus.OK);
     }
 
-//    @GetMapping(value = "/api/city/{id_city}")
-//    public ResponseEntity<List<CityDTO>> getCityByIDCity() {
-//        List<CityEntity> cityList = cityService.getAllCity();
+//    @GetMapping(value = "/api/city/{city_id}")
+//    public ResponseEntity<CityDTO> getCityByIDCity(@PathVariable Long city_id) {
+//
+//        CityEntity cityList = cityService.getCity(city_id);
+//
+//
+//
+//
+//
 //        Link link = linkTo(methodOn(CityController.class).getAllCity()).withSelfRel();
-//        List<CityDTO> cities = DTOBuilder.buildDtoListForCollection(cityList, CityDTO.class, link);
+//        CityDTO cities = DTOBuilder.buildDtoListForCollection(cityList, CityDTO.class, link);
 //        return new ResponseEntity<>(cities, HttpStatus.OK);
+//
+//
+//
+//
+//
 //    }
 
 

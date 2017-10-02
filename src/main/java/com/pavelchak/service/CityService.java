@@ -15,4 +15,8 @@ public class CityService {
     public List<CityEntity> getAllCity(){
         return cityRepository.findAll();
     }
+
+    public CityEntity getCity(Long city_id){
+        return cityRepository.getOne(city_id);
+    }
 }
