@@ -30,7 +30,7 @@ public class PersonEntity implements EntityInterface {
 
     @ManyToOne
     @JoinColumn(name = "IDCity", referencedColumnName = "IDCity")
-    private CityEntity cityByIdCity;
+    private CityEntity city;
 
     @ManyToMany
     @JoinTable(name = "personbook",
@@ -90,12 +90,12 @@ public class PersonEntity implements EntityInterface {
         this.apartment = apartment;
     }
 
-    public CityEntity getCityByIdCity() {
-        return cityByIdCity;
+    public CityEntity getCity() {
+        return city;
     }
 
-    public void setCityByIdCity(CityEntity cityByIdCity) {
-        this.cityByIdCity = cityByIdCity;
+    public void setCity(CityEntity city) {
+        this.city = city;
     }
 
     public Set<BookEntity> getBooks() {

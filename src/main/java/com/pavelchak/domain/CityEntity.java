@@ -2,7 +2,7 @@ package com.pavelchak.domain;
 
 import com.pavelchak.DTO.EntityInterface;
 import javax.persistence.*;
-import java.util.Collection;
+import java.util.List;
 
 @Entity
 @Table(name = "city")
@@ -15,14 +15,16 @@ public class CityEntity implements EntityInterface {
     @Column(name = "City", nullable = false, length = 25)
     private String city;
 
+    @OneToMany(mappedBy = "city")
+    private List<PersonEntity> persons;
+
     CityEntity(){}
 
     CityEntity(String city){
         this.city=city;
     }
 
-    @OneToMany(mappedBy = "cityByIdCity")
-    private Collection<PersonEntity> peopleByIdCity;
+
 
     public Long getId() {
         return id;
@@ -38,11 +40,11 @@ public class CityEntity implements EntityInterface {
         this.city = city;
     }
 
-    public Collection<PersonEntity> getPeopleByIdCity() {
-        return peopleByIdCity;
+    public List<PersonEntity> getPersons() {
+        return persons;
     }
-    public void setPeopleByIdCity(Collection<PersonEntity> peopleByIdCity) {
-        this.peopleByIdCity = peopleByIdCity;
+    public void setPersons(List<PersonEntity> persons) {
+        this.persons = persons;
     }
 
     @Override

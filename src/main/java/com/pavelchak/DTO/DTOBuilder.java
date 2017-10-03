@@ -5,6 +5,7 @@ import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 public class DTOBuilder {
 
@@ -26,6 +27,22 @@ public class DTOBuilder {
     }
 
     public static <M extends EntityInterface, T extends DTO<M>> List<T> buildDtoListForCollection(List<M> collection, Class<T> dtoClass, Link collectionLink) {
+        List<T> result = new ArrayList<>();
+        if (collection == null) {
+            return result;
+        }
+        for (M document : collection) {
+            Link selfLink = new Link(collectionLink.getHref() + "/" + document.getId()).withSelfRel();
+            T dtoForEntity = buildDtoForEntity(document, dtoClass, selfLink);
+            result.add(dtoForEntity);
+        }
+        return result;
+    }
+
+
+
+///????????????????????
+    public static <M extends EntityInterface, T extends DTO<M>> List<T> buildDtoListForCollection(Set<M> collection, Class<T> dtoClass, Link collectionLink) {
         List<T> result = new ArrayList<>();
         if (collection == null) {
             return result;
