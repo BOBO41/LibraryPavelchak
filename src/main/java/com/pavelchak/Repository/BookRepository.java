@@ -20,9 +20,4 @@ import static org.springframework.hateoas.mvc.ControllerLinkBuilder.methodOn;
 @Repository
 public interface BookRepository extends JpaRepository<BookEntity, Long> {
 
-
-
-
-
-
 }

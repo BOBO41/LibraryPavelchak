@@ -5,12 +5,11 @@ import com.pavelchak.Repository.PersonRepository;
 import com.pavelchak.domain.BookEntity;
 import com.pavelchak.domain.CityEntity;
 import com.pavelchak.domain.PersonEntity;
-import com.pavelchak.exceptions.NoSuchBookException;
-import com.pavelchak.exceptions.NoSuchCityException;
-import com.pavelchak.exceptions.NoSuchPersonException;
+import com.pavelchak.exceptions.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.util.List;
 import java.util.Set;
 
@@ -37,4 +36,30 @@ public class BookService {
     public List<BookEntity> getAllBooks(){
         return bookRepository.findAll();
     }
+
+    @Transactional
+    public void createBook(BookEntity bookEntity)  {
+        bookRepository.save(bookEntity);
+    }
+
+    @Transactional
+    public void updateBook(BookEntity uBookEntity, Long book_id) throws NoSuchBookException {
+        BookEntity bookEntity = bookRepository.findOne(book_id);
+        if(bookEntity==null) throw new NoSuchBookException();
+        //update
+        bookEntity.setBookName(uBookEntity.getBookName());
+        bookEntity.setAuthor(uBookEntity.getAuthor());
+        bookEntity.setPublisher(uBookEntity.getPublisher());
+        bookEntity.setImprintYear(uBookEntity.getImprintYear());
+        bookEntity.setAmount(uBookEntity.getAmount());
+    }
+
+    @Transactional
+    public void deleteBook(Long book_id) throws NoSuchBookException, ExistsPersonForBookException {
+        BookEntity bookEntity =bookRepository.findOne(book_id);
+        if(bookEntity==null) throw new NoSuchBookException();
+        if(bookEntity.getPersons().size()!=0) throw new ExistsPersonForBookException();
+        bookRepository.delete(bookEntity);
+    }
+
 }

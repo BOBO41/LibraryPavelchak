@@ -2,6 +2,7 @@ package com.pavelchak.DTO.impl;
 
 import com.pavelchak.DTO.DTO;
 import com.pavelchak.controller.BookController;
+import com.pavelchak.domain.CityEntity;
 import com.pavelchak.domain.PersonEntity;
 import com.pavelchak.exceptions.NoSuchPersonException;
 import org.springframework.hateoas.Link;
@@ -32,6 +33,7 @@ public class PersonDTO extends DTO<PersonEntity> {
     }
 
     public String getCity() {
+        if(getEntity().getCity()==null) return "";
         return getEntity().getCity().getCity();
     }
 

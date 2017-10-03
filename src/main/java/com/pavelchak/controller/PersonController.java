@@ -56,4 +56,31 @@ public class PersonController {
         return new ResponseEntity<>(personDTO, HttpStatus.OK);
     }
 
+    @PostMapping(value = "/api/person/city/{city_id}")
+    public  ResponseEntity<PersonDTO> addPerson(@RequestBody PersonEntity newPersonEntity, @PathVariable Long city_id)
+            throws NoSuchCityException, NoSuchPersonException {
+        personService.createPerson(newPersonEntity, city_id);
+        Link link = linkTo(methodOn(PersonController.class).getPerson(newPersonEntity.getId())).withSelfRel();
+        PersonDTO personDTO = DTOBuilder.buildDtoForEntity(newPersonEntity,PersonDTO.class, link);
+        return new ResponseEntity<>(personDTO, HttpStatus.OK);
+    }
+
+    @PutMapping(value = "/api/person/{person_id}/city/{city_id}")
+    public  ResponseEntity<PersonDTO> updatePerson(@RequestBody PersonEntity uPersonEntity,
+                                                   @PathVariable Long person_id, @PathVariable Long city_id)
+            throws NoSuchCityException, NoSuchPersonException {
+        personService.updatePerson(uPersonEntity, person_id, city_id);
+        PersonEntity personEntity=personService.getPerson(person_id);
+        Link link = linkTo(methodOn(PersonController.class).getPerson(person_id)).withSelfRel();
+        PersonDTO personDTO = DTOBuilder.buildDtoForEntity(personEntity,PersonDTO.class, link);
+        return new ResponseEntity<>(personDTO, HttpStatus.OK);
+    }
+
+    @DeleteMapping(value = "/api/person/{person_id}")
+    public  ResponseEntity deletePerson(@PathVariable Long person_id) throws NoSuchPersonException, ExistsBooksForPersonException {
+        personService.deletePerson(person_id);
+        return new ResponseEntity(HttpStatus.OK);
+    }
+
+
 }

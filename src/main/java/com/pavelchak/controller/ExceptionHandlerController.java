@@ -1,9 +1,7 @@
 package com.pavelchak.controller;
 
 import com.pavelchak.DTO.impl.MessageDTO;
-import com.pavelchak.exceptions.NoSuchBookException;
-import com.pavelchak.exceptions.NoSuchCityException;
-import com.pavelchak.exceptions.NoSuchPersonException;
+import com.pavelchak.exceptions.*;
 import org.springframework.http.*;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
@@ -25,5 +23,21 @@ public class ExceptionHandlerController extends ResponseEntityExceptionHandler {
     ResponseEntity<MessageDTO> handleNoSushBookException() {
         return new ResponseEntity<MessageDTO>(new MessageDTO("Such book not found"), HttpStatus.NOT_FOUND);
     }
+
+    @ExceptionHandler(ExistsPersonsForCityException.class)
+    ResponseEntity<MessageDTO> handleExistsPersonsForCityException() {
+        return new ResponseEntity<MessageDTO>(new MessageDTO("Delete imposible. There are persons for this city"), HttpStatus.CONFLICT);
+    }
+
+    @ExceptionHandler(ExistsBooksForPersonException.class)
+    ResponseEntity<MessageDTO> handleExistsBooksForPersonException() {
+        return new ResponseEntity<MessageDTO>(new MessageDTO("Delete imposible. There are books for this person"), HttpStatus.CONFLICT);
+    }
+
+    @ExceptionHandler(ExistsPersonForBookException.class)
+    ResponseEntity<MessageDTO> handleExistsPersonsForBookException() {
+        return new ResponseEntity<MessageDTO>(new MessageDTO("Delete imposible. There are persons for this book"), HttpStatus.CONFLICT);
+    }
+
 
 }

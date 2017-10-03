@@ -6,6 +6,7 @@ import com.pavelchak.exceptions.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.util.*;
 
 @Service
@@ -39,6 +40,43 @@ public class PersonService {
         BookEntity bookEntity = bookRepository.findOne(book_id);
         if(bookEntity==null) throw new NoSuchBookException();
         return bookEntity.getPersons();
+    }
+
+    @Transactional
+    public void createPerson(PersonEntity personEntity, Long city_id) throws NoSuchCityException {
+        if(city_id>0) {
+            CityEntity cityEntity = cityRepository.findOne(city_id);
+            if (cityEntity == null) throw new NoSuchCityException();
+            personEntity.setCity(cityEntity);
+        }
+        personRepository.save(personEntity);
+    }
+
+    @Transactional
+    public void updatePerson(PersonEntity uPersonEntity, Long person_id,  Long city_id) throws NoSuchCityException, NoSuchPersonException {
+        CityEntity cityEntity = cityRepository.findOne(city_id);
+        if(city_id>0) {
+            if (cityEntity == null) throw new NoSuchCityException();
+        }
+        PersonEntity personEntity = personRepository.findOne(person_id);
+        if(personEntity==null) throw new NoSuchPersonException();
+        //update
+        personEntity.setSurname(uPersonEntity.getSurname());
+        personEntity.setName(uPersonEntity.getName());
+        personEntity.setEmail(uPersonEntity.getEmail());
+        if(city_id>0) personEntity.setCity(cityEntity);
+        else          personEntity.setCity(null);
+        personEntity.setStreet(uPersonEntity.getStreet());
+        personEntity.setApartment(uPersonEntity.getApartment());
+        personRepository.save(personEntity);
+    }
+
+    @Transactional
+    public void deletePerson(Long person_id) throws NoSuchPersonException, ExistsBooksForPersonException {
+        PersonEntity personEntity = personRepository.findOne(person_id);
+        if(personEntity==null) throw new NoSuchPersonException();
+        if(personEntity.getBooks().size()!=0)  throw new ExistsBooksForPersonException();
+        personRepository.delete(personEntity);
     }
 
 }

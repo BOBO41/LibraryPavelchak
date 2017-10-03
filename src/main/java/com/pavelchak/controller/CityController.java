@@ -3,6 +3,7 @@ package com.pavelchak.controller;
 import com.pavelchak.DTO.DTOBuilder;
 import com.pavelchak.DTO.impl.CityDTO;
 import com.pavelchak.domain.CityEntity;
+import com.pavelchak.exceptions.ExistsPersonsForCityException;
 import com.pavelchak.exceptions.NoSuchCityException;
 import com.pavelchak.service.CityService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -51,7 +52,7 @@ public class CityController {
     }
 
     @DeleteMapping(value = "/api/city/{city_id}")
-    public  ResponseEntity deleteCity(@PathVariable Long city_id) throws NoSuchCityException {
+    public  ResponseEntity deleteCity(@PathVariable Long city_id) throws NoSuchCityException, ExistsPersonsForCityException {
         cityService.deleteCity(city_id);
         return new ResponseEntity(HttpStatus.OK);
     }
