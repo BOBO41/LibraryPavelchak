@@ -5,6 +5,7 @@ import com.pavelchak.domain.*;
 import com.pavelchak.exceptions.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.PathVariable;
 
 import javax.transaction.Transactional;
 import java.util.*;
@@ -78,5 +79,33 @@ public class PersonService {
         if(personEntity.getBooks().size()!=0)  throw new ExistsBooksForPersonException();
         personRepository.delete(personEntity);
     }
+
+    @Transactional
+    public void addBookForPerson(Long person_id, Long book_id)
+            throws NoSuchPersonException, NoSuchBookException, AlreadyExistsBookInPersonException, BookAbsentException {
+        PersonEntity personEntity = personRepository.findOne(person_id);
+        if(personEntity==null) throw new NoSuchPersonException();
+        BookEntity bookEntity = bookRepository.findOne(book_id);
+        if(bookEntity==null) throw new NoSuchBookException();
+        if(personEntity.getBooks().contains(bookEntity)==true ) throw new AlreadyExistsBookInPersonException();
+        if( bookEntity.getAmount()<=bookEntity.getPersons().size() ) throw new BookAbsentException();
+        personEntity.getBooks().add(bookEntity);
+        personRepository.save(personEntity);
+    }
+
+    @Transactional
+    public void removeBookForPerson(Long person_id, Long book_id)
+            throws NoSuchPersonException, NoSuchBookException, PersonHasNotBookException {
+        PersonEntity personEntity = personRepository.findOne(person_id);
+        if(personEntity==null) throw new NoSuchPersonException();
+        BookEntity bookEntity = bookRepository.findOne(book_id);
+        if(bookEntity==null) throw new NoSuchBookException();
+        if(personEntity.getBooks().contains(bookEntity)==false ) throw new PersonHasNotBookException();
+        personEntity.getBooks().remove(bookEntity);
+        personRepository.save(personEntity);
+    }
+
+
+
 
 }

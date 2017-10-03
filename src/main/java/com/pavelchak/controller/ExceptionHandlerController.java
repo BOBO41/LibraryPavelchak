@@ -39,5 +39,24 @@ public class ExceptionHandlerController extends ResponseEntityExceptionHandler {
         return new ResponseEntity<MessageDTO>(new MessageDTO("Delete imposible. There are persons for this book"), HttpStatus.CONFLICT);
     }
 
+    @ExceptionHandler(AlreadyExistsBookInPersonException.class)
+    ResponseEntity<MessageDTO> handleAlreadyExistsBookInPersonExceptionException() {
+        return new ResponseEntity<MessageDTO>(new MessageDTO("Add imposible. The person already contain this book"), HttpStatus.CONFLICT);
+    }
+
+    @ExceptionHandler(BookAbsentException.class)
+    ResponseEntity<MessageDTO> handleBookAbsentException() {
+        return new ResponseEntity<MessageDTO>(new MessageDTO("Now this book is absent"), HttpStatus.NOT_FOUND);
+    }
+
+    @ExceptionHandler(PersonHasNotBookException.class)
+    ResponseEntity<MessageDTO> handlePersonHasNotBookException() {
+        return new ResponseEntity<MessageDTO>(new MessageDTO("The person hasn't this book"), HttpStatus.NOT_FOUND);
+    }
+
+    @ExceptionHandler(NoSuchLogException.class)
+    ResponseEntity<MessageDTO> handleNoSuchLogException() {
+        return new ResponseEntity<MessageDTO>(new MessageDTO("Such log not found"), HttpStatus.NOT_FOUND);
+    }
 
 }

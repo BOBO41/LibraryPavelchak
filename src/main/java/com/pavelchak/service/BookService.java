@@ -3,7 +3,6 @@ package com.pavelchak.service;
 import com.pavelchak.Repository.BookRepository;
 import com.pavelchak.Repository.PersonRepository;
 import com.pavelchak.domain.BookEntity;
-import com.pavelchak.domain.CityEntity;
 import com.pavelchak.domain.PersonEntity;
 import com.pavelchak.exceptions.*;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -1,7 +1,9 @@
 package com.pavelchak.controller;
 
 import com.pavelchak.DTO.DTOBuilder;
+import com.pavelchak.DTO.impl.BookDTO;
 import com.pavelchak.DTO.impl.PersonDTO;
+import com.pavelchak.domain.BookEntity;
 import com.pavelchak.domain.PersonEntity;
 import com.pavelchak.exceptions.*;
 import com.pavelchak.service.PersonService;
@@ -82,5 +84,24 @@ public class PersonController {
         return new ResponseEntity(HttpStatus.OK);
     }
 
+    @PostMapping(value = "/api/person/{person_id}/book/{book_id}")
+    public  ResponseEntity<PersonDTO> addBookForPerson(@PathVariable Long person_id, @PathVariable Long book_id)
+            throws NoSuchPersonException, NoSuchBookException, AlreadyExistsBookInPersonException, BookAbsentException {
+        personService.addBookForPerson(person_id,book_id);
+        PersonEntity personEntity = personService.getPerson(person_id);
+        Link link = linkTo(methodOn(PersonController.class).getPerson(person_id)).withSelfRel();
+        PersonDTO personDTO = DTOBuilder.buildDtoForEntity(personEntity,PersonDTO.class, link);
+        return new ResponseEntity<>(personDTO, HttpStatus.OK);
+    }
+
+    @DeleteMapping(value = "/api/person/{person_id}/book/{book_id}")
+    public  ResponseEntity<PersonDTO> removeBookForPerson(@PathVariable Long person_id, @PathVariable Long book_id)
+            throws NoSuchPersonException, NoSuchBookException, PersonHasNotBookException {
+        personService.removeBookForPerson(person_id,book_id);
+        PersonEntity personEntity = personService.getPerson(person_id);
+        Link link = linkTo(methodOn(PersonController.class).getPerson(person_id)).withSelfRel();
+        PersonDTO personDTO = DTOBuilder.buildDtoForEntity(personEntity,PersonDTO.class, link);
+        return new ResponseEntity<>(personDTO, HttpStatus.OK);
+    }
 
 }

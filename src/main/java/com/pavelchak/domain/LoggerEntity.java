@@ -1,16 +1,17 @@
 package com.pavelchak.domain;
 
+import com.pavelchak.DTO.EntityInterface;
+
 import javax.persistence.*;
-import java.sql.Timestamp;
 import java.util.Date;
 
 @Entity
 @Table(name = "logger")
-public class LoggerEntity {
+public class LoggerEntity  implements EntityInterface {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "IDLogger", nullable = false)
-    private Long idLogger;
+    private Long id;
 
     @Column(name = "Person", nullable = false, length = 50)
     private String person;
@@ -28,11 +29,11 @@ public class LoggerEntity {
     @Column(name = "User", nullable = true, length = 50)
     private String user;
 
-    public Long getIdLogger() {
-        return idLogger;
+    public Long getId() {
+        return id;
     }
-    public void setIdLogger(Long idLogger) {
-        this.idLogger = idLogger;
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public String getPerson() {
@@ -77,7 +78,7 @@ public class LoggerEntity {
 
         LoggerEntity that = (LoggerEntity) o;
 
-        if (idLogger != null ? !idLogger.equals(that.idLogger) : that.idLogger != null) return false;
+        if (id != null ? !id.equals(that.id) : that.id != null) return false;
         if (person != null ? !person.equals(that.person) : that.person != null) return false;
         if (book != null ? !book.equals(that.book) : that.book != null) return false;
         if (action != null ? !action.equals(that.action) : that.action != null) return false;
@@ -89,7 +90,7 @@ public class LoggerEntity {
 
     @Override
     public int hashCode() {
-        int result = idLogger != null ? idLogger.hashCode() : 0;
+        int result = id != null ? id.hashCode() : 0;
         result = 31 * result + (person != null ? person.hashCode() : 0);
         result = 31 * result + (book != null ? book.hashCode() : 0);
         result = 31 * result + (action != null ? action.hashCode() : 0);
