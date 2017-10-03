@@ -33,5 +33,27 @@ public class CityController {
         return new ResponseEntity<>(cityDTO, HttpStatus.OK);
     }
 
+    @PostMapping(value = "/api/city/{city_id}")
+    public  ResponseEntity<CityDTO> addCity(@RequestBody CityEntity newCityEntity) throws NoSuchCityException {
+        cityService.createCity(newCityEntity);
+        Link link = linkTo(methodOn(CityController.class).getCity(newCityEntity.getId())).withSelfRel();
+        CityDTO cityDTO = DTOBuilder.buildDtoForEntity(newCityEntity,CityDTO.class, link);
+        return new ResponseEntity<>(cityDTO, HttpStatus.OK);
+    }
+
+    @PutMapping(value = "/api/city/{city_id}")
+    public  ResponseEntity<CityDTO> updateCity(@RequestBody CityEntity ucityEntity, @PathVariable Long city_id) throws NoSuchCityException {
+        cityService.updateCity(ucityEntity, city_id);
+        CityEntity cityEntity = cityService.getCity(city_id);
+        Link link = linkTo(methodOn(CityController.class).getCity(city_id)).withSelfRel();
+        CityDTO cityDTO = DTOBuilder.buildDtoForEntity(cityEntity,CityDTO.class, link);
+        return new ResponseEntity<>(cityDTO, HttpStatus.OK);
+    }
+
+    @DeleteMapping(value = "/api/city/{city_id}")
+    public  ResponseEntity deleteCity(@PathVariable Long city_id) throws NoSuchCityException {
+        cityService.deleteCity(city_id);
+        return new ResponseEntity(HttpStatus.OK);
+    }
 
 }
