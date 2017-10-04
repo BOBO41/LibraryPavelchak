@@ -53,7 +53,7 @@ public class BookController {
         bookService.createBook(newBookEntity);
         Link link = linkTo(methodOn(BookController.class).getBook(newBookEntity.getId())).withSelfRel();
         BookDTO bookDTO = DTOBuilder.buildDtoForEntity(newBookEntity,BookDTO.class, link);
-        return new ResponseEntity<>(bookDTO, HttpStatus.OK);
+        return new ResponseEntity<>(bookDTO, HttpStatus.CREATED);
     }
 
     @PutMapping(value = "/api/book/{book_id}")

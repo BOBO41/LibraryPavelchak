@@ -39,7 +39,7 @@ public class CityController {
         cityService.createCity(newCityEntity);
         Link link = linkTo(methodOn(CityController.class).getCity(newCityEntity.getId())).withSelfRel();
         CityDTO cityDTO = DTOBuilder.buildDtoForEntity(newCityEntity,CityDTO.class, link);
-        return new ResponseEntity<>(cityDTO, HttpStatus.OK);
+        return new ResponseEntity<>(cityDTO, HttpStatus.CREATED);
     }
 
     @PutMapping(value = "/api/city/{city_id}")

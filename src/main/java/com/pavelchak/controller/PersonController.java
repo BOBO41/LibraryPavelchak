@@ -64,7 +64,7 @@ public class PersonController {
         personService.createPerson(newPersonEntity, city_id);
         Link link = linkTo(methodOn(PersonController.class).getPerson(newPersonEntity.getId())).withSelfRel();
         PersonDTO personDTO = DTOBuilder.buildDtoForEntity(newPersonEntity,PersonDTO.class, link);
-        return new ResponseEntity<>(personDTO, HttpStatus.OK);
+        return new ResponseEntity<>(personDTO, HttpStatus.CREATED);
     }
 
     @PutMapping(value = "/api/person/{person_id}/city/{city_id}")
